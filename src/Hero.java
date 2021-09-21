@@ -1,8 +1,9 @@
 public class Hero extends Character{
 	  
 	  // コンストラクタ
-	  public Hero(String name) {
+	  public Hero(String name, int level) {
 		  this.name = name;
+		  this.level = level;
 	  }
 	  
 	  // アタック攻撃
@@ -17,10 +18,10 @@ public class Hero extends Character{
 		  return 3 * Main.turnCount;
 	  }
 	  
-	  // 眠る
-	  public int sleep() {
-	    System.out.println(this.name + "は眠って回復した！");
-	    return 100;
+	  // エイド
+	  public int Aid() {
+	    System.out.println(this.name + "はエイドを発動した！");
+	    return 10;
 	  }
 	  
 	  public int selectRandam() {
@@ -31,7 +32,7 @@ public class Hero extends Character{
 		    	  return -Kick();
 		      case 3:
 		      default:
-		    	  return sleep();
+		    	  return Aid();
 		  }
 		  
 	  }	  
