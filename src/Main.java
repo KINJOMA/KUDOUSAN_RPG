@@ -1,11 +1,13 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 	
 	  public static int turnCount = 0;     //メンバ変数なのでthisが使える
 	  public static void main(String[] args) {
 			
+		  boolean WIN = true;
 		  Hero tarou = new Hero("太郎",1);	//インスタンスの生成
 		  Cleric jirou = new Cleric("次郎",1);
 		  
@@ -22,15 +24,25 @@ public class Main {
 		  
 		  DisplayResult dr = new DisplayResult();   
 		  
-		  for(int i = 0; i < 10; i++) {    //iが０から９の繰り返し
+		  for(int i = 0; i < 100; i++) {    //iが０から９の繰り返し
 			  // ターン
 			  turnCount++;
-			  
+			  int  deathCountAllies = 0;
+			  int  deathCountEnemies = 0;
 			  // 味方チーム
 			  for(Character ally :Allies) {
+				  if(ally.hp == 0 ) {
+					  deathCountAllies++;
+					  continue;               //HPが０なら攻撃しないようにfor文から抜ける
+				  }
 				  // 技の選択
 				  // TODO:ユーザ入力できるようにする
-				  int point = ally.selectRandam();
+				  System.out.println("1または２または３を入力してください");
+			        Scanner scan = new Scanner(System.in);     
+			        String str = scan.next();      //入力を受け付ける  入力した文字を代入
+			        
+			        
+				  int point = ally.Select(Integer.parseInt(str));
 				  if(point < 0) {
 					  // 攻撃
 					  int idx = Util.Random(Enemies.size()-1);
@@ -43,10 +55,15 @@ public class Main {
 					  Character a = Allies.get(idx);
 					  a.hp += Math.min(a.maxHp - a.hp, point); // MaxHPを上回らないようにmin()を使用する
 				  }
+				  
 			  }
 			  
 			  // 敵チーム
 			  for(Character enemy :Enemies) {
+				  if(enemy.hp == 0) {
+					  deathCountAllies++;
+					  continue;
+				  }
 				  // 技の選択
 				  int point = enemy.selectRandam();
 				  if(point < 0) {
@@ -61,79 +78,27 @@ public class Main {
 					  Character e = Enemies.get(idx);
 					  e.hp += Math.min(e.maxHp - e.hp, point); // 最大HPを上回らないようにmin()を使用する 
 				  }
+				  
 			  }
 
-			  /* 元のコード
-			   * キャラクター毎に、、
-			   * 　・技の選択
-			   *  ・攻撃（相手のHPが下がる）または回復（味方のHPがアップ） 
-			  //m2.hp -= tarou.Attack();
-			  int point = tarou.selectRandam();  //tarouの攻撃
-			  if(point < 0) {					//hpについて-する＝攻撃
-				  // 攻撃
-				  int idx = Util.Random(Enemy.size()-1);   //size０から始まる 個数は５で返ってくる。listが持っている個数を返すメソッド
-				  //Enemy.get(idx).hp += point;
-				  Character c = Enemy.get(idx);  //Enemy 0にm1,1はm2。idxが０だったたらm1がとりだされる。
-				  c.hp += point;                 //もしcにm1が入ってきたら攻撃される。　ポイントマイナスが加算＝攻撃される。
-			  }
-			  else {
-				  // 回復
-				  int idx = Util.Random(Allies.size()-1);
-				  Allies.get(idx).hp += point;
-			  }
-			  
-			  //jirou.hp -= m1.Poison();  //m1の攻撃
-			  point = m1.selectRandam(); //m1の攻撃でpointが返ってくる
-			  if(point<0) {
-				  int idx = Util.Random(Allies.size()-1);
-				  Allies.get(idx).hp += point;  //たす-の意味
-			  }
-			  else {
-				  int idx = Util.Random(Enemy.size()-1);
-				  Enemy.get(idx).hp += point;
-			  }
-			  
-			  //tarou.hp -= m2.Attack();  //m2の攻撃でtarouに代入
-			  point = m2.selectRandam();
-			  if(point<0) {
-				  int idx = Util.Random(Allies.size()-1);
-				  Allies.get(idx).hp += point;  //たす-の意味
-			  }
-			  else {
-				  int idx = Util.Random(Enemy.size()-1);
-				  Enemy.get(idx).hp += point;
-			  }
-			  
-			  point = jirou.selectRandam();
-			  if(point < 0) {
-				  // 攻撃
-				  int idx = Util.Random(Enemy.size()-1);
-				  Enemy.get(idx).hp += point;
-			  }
-			  else {
-				  // 回復
-				  int idx = Util.Random(Allies.size()-1);
-				  Allies.get(idx).hp += point;
-			  }
-			  //ここまででランダム攻撃について 1ターン分
-			  //m2.hp -= jirou.FireMagic();
-			  for(Character c : Allies) {
-				  if(c.hp < 1) {                    //cのhpが１より小さい条件
-					  Allies.remove(c);    //Alliysからcをremoveで除外
-				  }
-					//this.line1 += c.name + " HP:" + c.hp;
-				}
-			  for(Character c : Enemy) {
-				  if(c.hp < 1) {                    //cのhpが１より小さい条件
-					  Enemy.remove(c); 
-				  }
-			  }
-			  
-			  */
 			  dr.Output(Allies,Enemies);
 			  
+			  if(deathCountAllies ==  Allies.size()) {   
+				  WIN = false;
+				  break;  
+			  }
+			  else if(deathCountEnemies == Enemies.size()) {
+				  WIN = true;
+				  break;
+			  }
 			  // TODO:判定を入れる
 		  }
-		   
+		  if(WIN == true) {
+			  System.out.println("戦いに勝ちました");
+			
+		  }  
+		  else {
+			  System.out.println("負けてしまいました");
+		  }
 	  }
 }

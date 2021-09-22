@@ -37,4 +37,16 @@ public class Cleric extends Character{
 		  }
 		  
 	  }	  
+	  public int Select(int num) {
+		  switch(num) {
+		      case 1:
+		    	  return Aid();
+		      case 2:
+		    	  return Pray();
+		      case 3:
+		      default:
+		    	  return -FireMagic();
+		  }
+		  
+	  }	  
 }

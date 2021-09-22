@@ -35,5 +35,17 @@ public class Hero extends Character{
 		    	  return Aid();
 		  }
 		  
+	  }	 
+	  public int Select(int num) {
+		  switch(num) {
+		      case 1:
+		    	  return -Attack();
+		      case 2:
+		    	  return -Kick();
+		      case 3:
+		      default:
+		    	  return Aid();
+		  }
+		  
 	  }	  
 }

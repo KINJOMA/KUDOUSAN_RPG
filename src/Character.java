@@ -9,5 +9,9 @@ public class Character {
 	public int selectRandam() {
 		return 0;
 	};
+	public int Select(int num) {
+		return 0;
+	};
+	
 	
 }
