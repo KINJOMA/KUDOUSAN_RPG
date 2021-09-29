@@ -24,7 +24,7 @@ public class Hero extends Character{
 	    return 10;
 	  }
 	  
-	  public int selectRandam() {
+	  public int SelectRandam() {
 		  switch(Util.Random(3)) {
 		      case 1:
 		    	  return -Attack();
@@ -36,14 +36,14 @@ public class Hero extends Character{
 		  }
 		  
 	  }	 
-	  public int Select(int num) {
+	  public int Select(int num) {     //攻撃や回復のコマンド1,2,3を選択する。
 		  switch(num) {
 		      case 1:
-		    	  return -Attack();
+		    	  return -Attack();    //ここにattack関数を書くのはダメか？別で作ってreturnのが簡単？
 		      case 2:
 		    	  return -Kick();
 		      case 3:
-		      default:
+		      default:               //それ以外だったら
 		    	  return Aid();
 		  }
 		  

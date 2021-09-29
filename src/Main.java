@@ -7,16 +7,13 @@ public class Main {
 	  public static int turnCount = 0;     //メンバ変数なのでthisが使える
 	  public static void main(String[] args) {
 			
-		  boolean WIN = true;
-		  Hero tarou = new Hero("太郎",1);	//インスタンスの生成
-		  Cleric jirou = new Cleric("次郎",1);
-		  
+		  boolean WIN = true;        //WINをtrueとする。自動的にfalseならLOSE
 		  Matango m1 = new Matango(50, 'A');
 		  Matango m2 = new Matango(48, 'B');
 		  
 		  List<Character> Allies = new ArrayList<Character>();
-		  Allies.add(tarou);
-		  Allies.add(jirou);
+		  //Allies.add(tarou);
+		  //Allies.add(jirou);
 		  
 		  List<Character> Enemies = new ArrayList<Character>();
 		  Enemies.add(m1);
@@ -24,28 +21,29 @@ public class Main {
 		  
 		  DisplayResult dr = new DisplayResult();   
 		  
-		  for(int i = 0; i < 100; i++) {    //iが０から９の繰り返し
+		  for(int i = 0; i < 100; i++) {    //iが０から９の繰り返し   for無限として100以下に
 			  // ターン
 			  turnCount++;
-			  int  deathCountAllies = 0;
+			  int  deathCountAllies = 0;    //味方チーム二人の生き残り数
 			  int  deathCountEnemies = 0;
 			  // 味方チーム
 			  for(Character ally :Allies) {
-				  if(ally.hp == 0 ) {
-					  deathCountAllies++;
-					  continue;               //HPが０なら攻撃しないようにfor文から抜ける
-				  }
+				  if(ally.hp == 0 ) {           //敵のHPが0になれば、さっきつくっておいたdeathCountAlliesが1追加
+					  deathCountAllies++;      
+					  continue;               //HPが０なら攻撃しないようにfor文から抜ける break;だとfor文から抜け出してまた攻撃してしまう。
+				  }                        
 				  // 技の選択
 				  // TODO:ユーザ入力できるようにする
 				  System.out.println("1または２または３を入力してください");
-			        Scanner scan = new Scanner(System.in);     
-			        String str = scan.next();      //入力を受け付ける  入力した文字を代入
+			        Scanner scan = new Scanner(System.in);     //scanという名前でインスタンス作成
+			        String str = scan.next();      //入力を受け付ける  入力した文字をstrに代入
 			        
 			        
-				  int point = ally.Select(Integer.parseInt(str));
+				  int point = ally.Select(Integer.parseInt(str));   //味方の選択したコマンドメソッド？
+				 
 				  if(point < 0) {
 					  // 攻撃
-					  int idx = Util.Random(Enemies.size()-1);
+					  int idx = Util.Random(Enemies.size()-1);       //敵のsize()は１か２
 					  Character e = Enemies.get(idx);
 					  e.hp += Math.max(e.minHp - e.hp, point); // 最小HPを下回らないようにmax()を使用する           
 				  }
@@ -59,9 +57,9 @@ public class Main {
 			  }
 			  
 			  // 敵チーム
-			  for(Character enemy :Enemies) {
-				  if(enemy.hp == 0) {
-					  deathCountAllies++;
+			  for(Character enemy :Enemies) {       //拡張for文で、
+				  if(enemy.hp == 0) {               //敵のHPが0になると、死者の数を増やす。continue
+					  deathCountAllies++;           //breakだとチームがゼロになっても攻撃する
 					  continue;
 				  }
 				  // 技の選択
@@ -83,18 +81,18 @@ public class Main {
 
 			  dr.Output(Allies,Enemies);
 			  
-			  if(deathCountAllies ==  Allies.size()) {   
-				  WIN = false;
+			  if(deathCountAllies ==  Allies.size()) {     //味方tの死者が、味方のコマンド選択数１、２と同じになったら
+				  WIN = false;                     //勝てなかったら、breakする。for文から抜ける。抜けると攻撃できなくなる
 				  break;  
 			  }
-			  else if(deathCountEnemies == Enemies.size()) {
-				  WIN = true;
+			  else if(deathCountEnemies == Enemies.size()) {   //elseはダメ。敵の、死者が敵の選択数（size）と同じになれば・・・
+				  WIN = true;                             //勝ちで、for文から抜ける。
 				  break;
 			  }
 			  // TODO:判定を入れる
 		  }
 		  if(WIN == true) {
-			  System.out.println("戦いに勝ちました");
+			  System.out.println("戦いに勝ちました");      //もし勝ったら、この文面（printメソッド）を出すif文
 			
 		  }  
 		  else {
