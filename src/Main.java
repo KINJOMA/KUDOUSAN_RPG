@@ -8,12 +8,15 @@ public class Main {
 	  public static void main(String[] args) {
 			
 		  boolean WIN = true;        //WINをtrueとする。自動的にfalseならLOSE
+		  
+		  Hero tarou = new Hero("太郎",1);	//インスタンスの生成
+		  Cleric jirou = new Cleric("次郎",1);
 		  Matango m1 = new Matango(50, 'A');
 		  Matango m2 = new Matango(48, 'B');
 		  
 		  List<Character> Allies = new ArrayList<Character>();
-		  //Allies.add(tarou);
-		  //Allies.add(jirou);
+		  Allies.add(tarou);
+		  Allies.add(jirou);
 		  
 		  List<Character> Enemies = new ArrayList<Character>();
 		  Enemies.add(m1);
@@ -34,12 +37,26 @@ public class Main {
 				  }                        
 				  // 技の選択
 				  // TODO:ユーザ入力できるようにする
-				  System.out.println("1または２または３を入力してください");
-			        Scanner scan = new Scanner(System.in);     //scanという名前でインスタンス作成
-			        String str = scan.next();      //入力を受け付ける  入力した文字をstrに代入
-			        
-			        
-				  int point = ally.Select(Integer.parseInt(str));   //味方の選択したコマンドメソッド？
+				  
+			        int num = 0;
+		            
+		            while(num == 0 ) {
+		            	System.out.println("1または２または３を入力してください");
+				        Scanner scan = new Scanner(System.in);     //scanという名前でインスタンス作成
+				        String str = scan.next();      //入力を受け付ける  入力した文字をstrに代入
+				        
+			            try
+			            {
+			            	num = Integer.parseInt(str);
+			            }
+			            catch (Exception e)
+			            {
+			            	System.out.println("整数値以外が入力されました");
+			               num = 0;
+			            }
+		            }
+		            
+		            int point = ally.Select(num);  
 				 
 				  if(point < 0) {
 					  // 攻撃

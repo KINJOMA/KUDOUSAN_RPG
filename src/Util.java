@@ -10,7 +10,7 @@ public class Util{
 		  Random r = new java.util.Random();
 		  
 		  return r.nextInt(num + 1);
-		  	  
+
 	  }
 	  
 	  // 1～引数numの乱数を返すメソッド
